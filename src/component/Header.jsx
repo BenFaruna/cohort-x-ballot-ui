@@ -1,5 +1,5 @@
 import { Flex } from "@radix-ui/themes";
-import GiveRightToVoteComponent from "./GiveRightToVoteComponent";
+import GiveRightToVoteComponent from "./GiveRightToVote";
 import useIsChairPerson from "../hooks/useIsChairPerson";
 
 export default function Header() {

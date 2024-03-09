@@ -40,7 +40,10 @@ const GiveRightToVoteComponent = () => {
                     </Dialog.Close>
                     <Button
                         className="bg-blue-600"
-                        onClick={handleGiveRightToVote}
+                        onClick={async () => {
+                            await handleGiveRightToVote()
+                            setAddress("")
+                        }}
                     >
                         Add voter
                     </Button>
