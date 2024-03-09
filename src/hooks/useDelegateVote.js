@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import toast from "react-hot-toast";
 import { isSupportedChain } from "../utils";
 import { isAddress } from "ethers";
 import { getProvider } from "../constants/providers";
@@ -25,11 +26,26 @@ const useDelegateVote = (address) => {
             const receipt = await tx.wait();
 
             if (receipt.status) {
+                toast.success("Delegate successfull!");
                 return console.log("delegate successfull!");
             }
+            toast.error("Delegate failed!");
             console.log("delegate failed!");
         } catch (error) {
-            console.error("error: ", error);
+            console.error(error);
+            let errorText;
+            if (error.reason === "You already voted.") {
+                errorText = "You already voted.";
+            } else if (error.reason === "Self-delegation is disallowed.") {
+                errorText = "Self-delegation is disallowed.";
+            } else if (error.reason === "Found loop in delegation.") {
+                errorText = "Found loop in delegation.";
+            } else {
+                errorText = "An unknown error occured";
+            }
+
+            toast.error(errorText);
+            console.error("error: ", errorText);
         }
     }, [address, chainId, walletProvider]);
 }
