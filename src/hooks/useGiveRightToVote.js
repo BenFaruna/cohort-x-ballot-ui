@@ -7,14 +7,22 @@ import {
     useWeb3ModalAccount,
     useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
+import toast from "react-hot-toast";
+
 
 const useGiveRightToVote = (address) => {
     const { chainId } = useWeb3ModalAccount();
     const { walletProvider } = useWeb3ModalProvider();
 
     return useCallback(async () => {
-        if (!isSupportedChain(chainId)) return console.error("Wrong network");
-        if (!isAddress(address)) return console.error("Invalid address");
+        if (!isSupportedChain(chainId)) {
+            toast.error("Wrong network")
+            return console.error("Wrong network")
+        };
+        if (!isAddress(address)) {
+            toast.error("Invalid Address")
+            return console.error("Invalid address")
+        };
         const readWriteProvider = getProvider(walletProvider);
         const signer = await readWriteProvider.getSigner();
 
@@ -43,11 +51,13 @@ const useGiveRightToVote = (address) => {
             console.log("receipt: ", receipt);
 
             if (receipt.status) {
+                toast.success("Voter added")
                 return console.log("giveRightToVote successfull!");
             }
-
+            toast.error("Voter added")
             console.log("giveRightToVote failed!");
         } catch (error) {
+            toast.error(error.reason)
             console.error("error: ", error);
         }
     }, [address, chainId, walletProvider]);
